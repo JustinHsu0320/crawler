@@ -1,0 +1,66 @@
+FROM ubuntu
+RUN apt-get update
+
+RUN apt-get install -y vim
+RUN apt-get install -y curl
+RUN apt-get install -y wget
+RUN apt-get install -y zip unzip
+RUN apt-get install -y tzdata
+
+# Install Node.js
+RUN apt-get install -y python-software-properties
+RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+RUN apt-get install -y nodejs
+
+# RUN apt-get install -y nmap
+# RUN apt-get install -y vim
+# RUN apt-get install -y iputils-ping
+# RUN apt-get install -y curl
+# RUN apt-get install -y wget
+# RUN apt-get install -y zip unzip
+# RUN apt-get install -y tzdata
+
+
+ENV TZ="Asia/Taipei"
+RUN ln -fs /usr/share/zoneinfo/Asia/Taipei /etc/localtime 
+RUN dpkg-reconfigure -f noninteractive tzdata
+
+# RUN apt-get update \
+#   && apt-get install -y python3-pip python3-dev \
+#   && cd /usr/local/bin \
+#   && ln -s /usr/bin/python3 python \
+#   && pip3 install --upgrade pip
+
+# Install Chrome for Selenium
+RUN curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add
+RUN echo "deb [arch=amd64]  http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
+RUN apt-get -y update
+RUN apt-get -y install google-chrome-stable
+
+# Install chromedriver for Selenium
+RUN wget https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
+RUN unzip chromedriver_linux64.zip
+RUN mv chromedriver /usr/bin/chromedriver
+RUN chown root:root /usr/bin/chromedriver
+RUN chmod +x /usr/bin/chromedriver
+
+# Install Firefox
+# RUN apt-get update && apt-get install -y firefox
+
+# Install geckodriver
+# RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.16.1/geckodriver-v0.16.1-linux64.tar.gz
+# RUN sh -c 'tar -x geckodriver -zf geckodriver-v0.16.1-linux64.tar.gz -O > /usr/bin/geckodriver'
+# RUN chmod +x /usr/bin/geckodriver
+# RUN rm geckodriver-v0.16.1-linux64.tar.gz
+
+# COPY . /app
+# WORKDIR /app
+# COPY ./requirements.txt /app
+
+# RUN pip install -r requirements.txt
+# RUN pip install --upgrade pip setuptools
+
+# ENTRYPOINT ["python"]
+# CMD ["app.py"]
+
+RUN node -v && npm -v
